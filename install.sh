@@ -18,5 +18,5 @@ echo "Installing $scriptname..."
 mkdir -p $installPath
 rm -rf $installPath/*
 cp -r * $installPath
-ln -fs $installPath/$scriptname $binPath
+ln -fs $installPath/$scriptName $binPath
 chmod ugo+rx $binPath
