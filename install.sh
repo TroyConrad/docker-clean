@@ -9,9 +9,9 @@ if [ "$osName" != 'Linux' ]; then
 	exit
 fi
 
-scriptName='docker-clean'
-installPath='/opt/$scriptName'
-binPath='/usr/local/bin/$scriptName'
+scriptName=docker-clean
+installPath=/opt/$scriptName
+binPath=/usr/local/bin/$scriptName
 
 echo "Installing $scriptName..."
 
