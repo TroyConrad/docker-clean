@@ -4,7 +4,7 @@
 
 # Linux or bust!
 osName=`uname`
-if [[ "$osName" != 'Linux' ]]; then
+if [ "$osName" != 'Linux' ]; then
 	echo "Sorry, this script only works on Linux."
 	exit
 fi
