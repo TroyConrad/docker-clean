@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# install.sh v1.0.0 21Oct2015 (Great Scott!)
+# install.sh v1.0.1 04Nov2015
 
 # Linux or bust!
 osName=`uname`
@@ -10,10 +10,10 @@ if [ "$osName" != 'Linux' ]; then
 fi
 
 scriptName='docker-clean'
-installPath='/opt/$scriptname'
-binPath='/usr/local/bin/$scriptname'
+installPath='/opt/$scriptName'
+binPath='/usr/local/bin/$scriptName'
 
-echo "Installing $scriptname..."
+echo "Installing $scriptName..."
 
 mkdir -p $installPath
 rm -rf $installPath/*
