@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# docker-clean version 0.2.0, modified 11Nov2015 by Troy Conrad <troy.conrad@lbox.com>
+# docker-clean version 0.2.1, modified 11Nov2015 by Troy Conrad <troy.conrad@lbox.com>
 # Based on commands from http://blog.yohanliyanage.com/2015/05/docker-clean-up-after-yourself/
 
 SCRIPT_NAME=docker-clean
@@ -57,7 +57,7 @@ if [ "`which docker`" == '' ]; then
 fi
 
 # Is Docker running?
-if [ "`docker info | grep version`" == '' ]; then
+if [ "`docker info | grep Version`" == '' ]; then
 	exit 1
 fi
 
