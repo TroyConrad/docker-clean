@@ -4,7 +4,7 @@
 # Based on commands from http://blog.yohanliyanage.com/2015/05/docker-clean-up-after-yourself/
 
 SCRIPT_NAME=docker-clean
-VERSION=0.2.0
+VERSION=0.2.1
 
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
 
