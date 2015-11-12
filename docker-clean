@@ -1,11 +1,90 @@
 #!/bin/bash
 
-# Version 0.1.0, modified 04Nov2015 by Troy Conrad <troy.conrad@lbox.com>
-
+# docker-clean version 0.2.0, modified 11Nov2015 by Troy Conrad <troy.conrad@lbox.com>
 # Based on commands from http://blog.yohanliyanage.com/2015/05/docker-clean-up-after-yourself/
 
-sudo docker rm -v $(sudo docker ps -a -q -f status=exited)
+SCRIPT_NAME=docker-clean
+VERSION=0.2.0
 
-sudo docker rmi $(sudo docker images -f "dangling=true" -q)
+OPTIND=1 # Reset in case getopts has been used previously in the shell.
 
-sudo docker run -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker --rm martin/docker-cleanup-volumes
+dry_run=0
+
+while getopts "dhV" opt; do
+    case "$opt" in
+
+    d)  dry_run=1
+        ;;
+
+    h)  cat <<-ENDOFHELP
+		$SCRIPT_NAME version $VERSION
+		
+		Deletes any stopped Docker containers and dangling images.
+		
+		Usage:
+		
+		$SCRIPT_NAME [-d] [-h] [-V]
+		
+		Options:
+		
+		  -d	Dry run mode. Only show what would be done.
+
+		  -h	Show this Help screen and exit.
+		  
+		  -V	Show Version info and exit.
+		ENDOFHELP
+	    exit 0
+;;
+
+    V)
+        echo $SCRIPT_NAME version $VERSION
+        exit 0
+        ;;
+
+    esac
+done
+
+# Are we effectivly root?
+if [[ $EUID -ne 0 ]]; then
+   echo "Sorry, this script must be run as root/sudo." 
+   exit 1
+fi
+
+# Is Docker installed?
+if [ "`which docker`" == '' ]; then
+	echo "Sorry, Docker doesn't seem to be installed."
+	exit 1
+fi
+
+# Is Docker running?
+if [ "`docker info | grep version`" == '' ]; then
+	exit 1
+fi
+
+shift $((OPTIND-1))
+
+[ "$1" = "--" ] && shift
+
+if [ $dry_run = 1 ]; then
+
+	echo "Dry run mode (-d) enabled, no changes will be made."
+
+	echo "Stopped containers:"
+	docker ps -a -f status=exited
+
+	echo "Dangling images:"
+	docker images -f "dangling=true"
+
+else
+
+	echo "Deleting stopped containers:"
+	docker rm -v $(docker ps -a -q -f status=exited)
+
+	echo "Deleting dangling images:"
+	docker rmi $(docker images -f "dangling=true" -q)
+
+	#docker run -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker --rm martin/docker-cleanup-volumes
+
+fi
+
+echo "Cleaning complete."
